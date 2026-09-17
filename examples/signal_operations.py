@@ -1,12 +1,9 @@
 from pds.signals import (
     time_vector,
-    sine_signal
+    triangular_signal
 )
 
-from pds.operations import (
-    amplitude_scale,
-    add_constant
-)
+from pds.operations import transform_time
 
 from pds.plotting import plot_overlay
 
@@ -15,65 +12,48 @@ from pds.plotting import plot_overlay
 # TIME VECTOR
 # ======================================================
 
-t = time_vector(0, 0.2, fs=200)
+t = time_vector(-5, 5, fs=20)
 
 
 # ======================================================
 # ORIGINAL SIGNAL
 # ======================================================
 
-x = sine_signal(
+x = triangular_signal(
     t,
-    A=2,
-    f=20
+    A=1,
+    alpha=1,
+    beta=2
 )
 
 
 # ======================================================
-# AMPLITUDE SCALING
+# GENERAL TIME TRANSFORMATION
 # ======================================================
 
-y_positive = amplitude_scale(x, 2)
+t_transformed = transform_time(
+    t,
+    a=-2,
+    b=-2
+)
 
-y_negative = amplitude_scale(x, -1)
-
-y_shifted = add_constant(x, 3)
-
-y_shifted = add_constant(x, 3)
+y = triangular_signal(
+    t_transformed,
+    A=1,
+    alpha=1,
+    beta=2
+)
 
 
 # ======================================================
-# PLOTS
+# PLOT
 # ======================================================
 
 plot_overlay(
     t,
-    signals=[x, y_positive],
-    labels=["Original signal", "C = 2"],
-    title="Positive Amplitude Scaling",
-    ylabel="Amplitude [V]"
+    signals=[x, y],
+    labels=["x(t)", "x(-2t - 2)"],
+    title="General Time Transformation",
+    ylabel="Amplitude"
 )
 
-plot_overlay(
-    t,
-    signals=[x, y_negative],
-    labels=["Original signal", "C = -1"],
-    title="Negative Amplitude Scaling",
-    ylabel="Amplitude [V]"
-)
-
-plot_overlay(
-    t,
-    signals=[x, y_shifted],
-    labels=["Original signal", "C = 3"],
-    title="Addition of a Constant",
-    ylabel="Amplitude [V]"
-)
-
-plot_overlay(
-    t,
-    signals=[x, y_shifted],
-    labels=["Original signal", "C = 3"],
-    title="Addition of a Constant",
-    ylabel="Amplitude [V]"
-)
