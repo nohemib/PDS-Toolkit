@@ -1,78 +1,91 @@
-from pds.signals import (
+"""
+Signal Operations Example
+
+This example demonstrates amplitude and time transformations
+using the reusable functions available in PDS Toolkit.
+"""
+
+from pds import (
     time_vector,
-    exponential_signal
-)
-
-from pds.operations import (
+    triangular_signal,
     amplitude_scale,
-    transform_time
+    add_constant,
+    transform_time,
+    plot_overlay,
 )
-
-from pds.plotting import plot_overlay
-
-from pds.plotting import plot_comparison
-
-
-# ======================================================
-# TIME VECTOR
-# ======================================================
-
-t = time_vector(-5, 5, fs=50)
 
 
 # ======================================================
 # ORIGINAL SIGNAL
-# x4(t) = 3e^(-(t+1))u(t+1)
 # ======================================================
 
-x4 = exponential_signal(
+t = time_vector(-5, 5, fs=20)
+
+x = triangular_signal(
     t,
-    A=3,
-    decay=1,
-    shift=-1
+    A=1,
+    alpha=0,
+    beta=2
 )
 
 
 # ======================================================
-# TIME TRANSFORMATION
-# x4(-t - 2)
+# 1. AMPLITUDE SCALING
+# y(t) = 2x(t)
+# ======================================================
+
+y_amplitude = amplitude_scale(
+    x,
+    C=2
+)
+
+plot_overlay(
+    t,
+    signals=[x, y_amplitude],
+    labels=["x(t)", "2x(t)"],
+    title="Amplitude Scaling"
+)
+
+
+# ======================================================
+# 2. ADDITION OF A CONSTANT
+# y(t) = x(t) + 2
+# ======================================================
+
+y_constant = add_constant(
+    x,
+    C=2
+)
+
+plot_overlay(
+    t,
+    signals=[x, y_constant],
+    labels=["x(t)", "x(t) + 2"],
+    title="Addition of a Constant"
+)
+
+
+# ======================================================
+# 3. GENERAL TIME TRANSFORMATION
+# y(t) = x(2t - 2)
 # ======================================================
 
 t_transformed = transform_time(
     t,
-    a=-1,
+    a=2,
     b=-2
 )
 
-x4_transformed = exponential_signal(
+y_time = triangular_signal(
     t_transformed,
-    A=3,
-    decay=1,
-    shift=-1
+    A=1,
+    alpha=0,
+    beta=2
 )
 
-
-# ======================================================
-# AMPLITUDE TRANSFORMATION
-# y4(t) = -x4(-t - 2)
-# ======================================================
-
-y4 = amplitude_scale(
-    x4_transformed,
-    C=-1
-)
-
-
-# ======================================================
-# PLOT
-# ======================================================
-
-plot_comparison(
+plot_overlay(
     t,
-    x4,
-    y4,
-    title_1="Original Signal: x4(t)",
-    title_2="Transformed Signal: y4(t)",
-    ylabel="Amplitude"
+    signals=[x, y_time],
+    labels=["x(t)", "x(2t - 2)"],
+    title="General Time Transformation"
 )
-
