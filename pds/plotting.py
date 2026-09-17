@@ -116,3 +116,105 @@ def plot_signal(
     plt.show()
 
     return fig, ax
+
+
+def plot_overlay(
+    t,
+    signals,
+    labels=None,
+    title="Signal Comparison",
+    xlabel="Time [s]",
+    ylabel="Amplitude",
+    marker="o",
+    markersize=4,
+    linewidth=1,
+    grid=True,
+    xlim=None,
+    ylim=None,
+    save_path=None
+):
+    """
+    Plot multiple signals on the same axes.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    signals : list
+        List of signals to plot.
+    labels : list of str or None, optional
+        Labels associated with each signal.
+    title : str, optional
+        Plot title.
+    xlabel : str, optional
+        Label for the x-axis.
+    ylabel : str, optional
+        Label for the y-axis.
+    marker : str or None, optional
+        Marker style.
+    markersize : float, optional
+        Marker size.
+    linewidth : float, optional
+        Line width.
+    grid : bool, optional
+        Enable or disable the grid.
+    xlim : tuple or None, optional
+        Limits for the x-axis.
+    ylim : tuple or None, optional
+        Limits for the y-axis.
+    save_path : str or None, optional
+        Path used to save the figure.
+
+    Returns
+    -------
+    tuple
+        Matplotlib figure and axes objects.
+    """
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+
+    if labels is not None and len(labels) != len(signals):
+        raise ValueError(
+            "The number of labels must match the number of signals."
+        )
+
+    for i, signal in enumerate(signals):
+
+        label = labels[i] if labels is not None else None
+
+        ax.plot(
+            t,
+            signal,
+            marker=marker,
+            markersize=markersize,
+            linewidth=linewidth,
+            label=label
+        )
+
+    ax.set_title(title)
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+
+    ax.minorticks_on()
+    ax.grid(grid, which="major", alpha=0.6)
+    ax.grid(grid, which="minor", alpha=0.2)
+
+    if labels is not None:
+        ax.legend()
+
+    if xlim is not None:
+        ax.set_xlim(xlim)
+
+    if ylim is not None:
+        ax.set_ylim(ylim)
+
+    if save_path is not None:
+        fig.savefig(
+            save_path,
+            dpi=300,
+            bbox_inches="tight"
+        )
+
+    plt.show()
+
+    return fig, ax
