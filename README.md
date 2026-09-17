@@ -65,7 +65,7 @@ PDS-Toolkit/
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
-└── LICENSE
+
 ```
 
 ## Installation
