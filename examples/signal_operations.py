@@ -1,47 +1,65 @@
 from pds.signals import (
     time_vector,
-    triangular_signal
+    exponential_signal
 )
 
-from pds.operations import transform_time
+from pds.operations import (
+    amplitude_scale,
+    transform_time
+)
 
 from pds.plotting import plot_overlay
+
+from pds.plotting import plot_comparison
 
 
 # ======================================================
 # TIME VECTOR
 # ======================================================
 
-t = time_vector(-5, 5, fs=20)
+t = time_vector(-5, 5, fs=50)
 
 
 # ======================================================
 # ORIGINAL SIGNAL
+# x4(t) = 3e^(-(t+1))u(t+1)
 # ======================================================
 
-x = triangular_signal(
+x4 = exponential_signal(
     t,
-    A=1,
-    alpha=1,
-    beta=2
+    A=3,
+    decay=1,
+    shift=-1
 )
 
 
 # ======================================================
-# GENERAL TIME TRANSFORMATION
+# TIME TRANSFORMATION
+# x4(-t - 2)
 # ======================================================
 
 t_transformed = transform_time(
     t,
-    a=-2,
+    a=-1,
     b=-2
 )
 
-y = triangular_signal(
+x4_transformed = exponential_signal(
     t_transformed,
-    A=1,
-    alpha=1,
-    beta=2
+    A=3,
+    decay=1,
+    shift=-1
+)
+
+
+# ======================================================
+# AMPLITUDE TRANSFORMATION
+# y4(t) = -x4(-t - 2)
+# ======================================================
+
+y4 = amplitude_scale(
+    x4_transformed,
+    C=-1
 )
 
 
@@ -49,11 +67,12 @@ y = triangular_signal(
 # PLOT
 # ======================================================
 
-plot_overlay(
+plot_comparison(
     t,
-    signals=[x, y],
-    labels=["x(t)", "x(-2t - 2)"],
-    title="General Time Transformation",
+    x4,
+    y4,
+    title_1="Original Signal: x4(t)",
+    title_2="Transformed Signal: y4(t)",
     ylabel="Amplitude"
 )
 

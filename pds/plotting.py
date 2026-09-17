@@ -218,3 +218,114 @@ def plot_overlay(
     plt.show()
 
     return fig, ax
+
+
+def plot_comparison(
+    t,
+    x,
+    y,
+    title_1="Original Signal",
+    title_2="Transformed Signal",
+    xlabel="Time [s]",
+    ylabel="Amplitude",
+    marker="o",
+    markersize=4,
+    linewidth=1,
+    grid=True,
+    xlim=None,
+    ylim=None,
+    save_path=None
+):
+    """
+    Plot an original signal and a transformed signal side by side.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    x : numpy.ndarray
+        Original signal.
+    y : numpy.ndarray
+        Transformed signal.
+    title_1 : str, optional
+        Title of the original signal.
+    title_2 : str, optional
+        Title of the transformed signal.
+    xlabel : str, optional
+        Label for the x-axis.
+    ylabel : str, optional
+        Label for the y-axis.
+    marker : str or None, optional
+        Marker style.
+    markersize : float, optional
+        Marker size.
+    linewidth : float, optional
+        Line width.
+    grid : bool, optional
+        Enable or disable the grid.
+    xlim : tuple or None, optional
+        Limits for both x-axes.
+    ylim : tuple or None, optional
+        Limits for both y-axes.
+    save_path : str or None, optional
+        Path used to save the figure.
+
+    Returns
+    -------
+    tuple
+        Matplotlib figure and axes objects.
+    """
+
+    fig, axes = plt.subplots(
+        1,
+        2,
+        figsize=(12, 5),
+        sharex=True,
+        sharey=True
+    )
+
+    axes[0].plot(
+        t,
+        x,
+        marker=marker,
+        markersize=markersize,
+        linewidth=linewidth
+    )
+
+    axes[1].plot(
+        t,
+        y,
+        marker=marker,
+        markersize=markersize,
+        linewidth=linewidth
+    )
+
+    axes[0].set_title(title_1)
+    axes[1].set_title(title_2)
+
+    for ax in axes:
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel(ylabel)
+
+        ax.minorticks_on()
+        ax.grid(grid, which="major", alpha=0.6)
+        ax.grid(grid, which="minor", alpha=0.2)
+
+        if xlim is not None:
+            ax.set_xlim(xlim)
+
+        if ylim is not None:
+            ax.set_ylim(ylim)
+
+    fig.tight_layout()
+
+    if save_path is not None:
+        fig.savefig(
+            save_path,
+            dpi=300,
+            bbox_inches="tight"
+        )
+
+    plt.show()
+
+    return fig, axes
