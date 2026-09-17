@@ -1,7 +1,6 @@
 from pds.signals import (
     time_vector,
-    rectangular_signal,
-    triangular_signal
+    impulse_signal
 )
 
 from pds.plotting import plot_signal
@@ -11,48 +10,29 @@ from pds.plotting import plot_signal
 # TIME VECTOR
 # ======================================================
 
-t = time_vector(-5, 3, fs=20)
+t = time_vector(-1, 1, fs=10)
 
 
 # ======================================================
-# RECTANGULAR SIGNAL
+# IMPULSE SIGNAL
 # ======================================================
 
-x_rect = rectangular_signal(
+x_impulse = impulse_signal(
     t,
     A=1,
-    alpha=-1,
-    beta=3
+    shift=0.5
 )
 
 
 # ======================================================
-# TRIANGULAR SIGNAL
-# ======================================================
-
-x_tri = triangular_signal(
-    t,
-    A=1,
-    alpha=-2,
-    beta=4
-)
-
-
-# ======================================================
-# PLOTS
+# PLOT
 # ======================================================
 
 plot_signal(
     t,
-    x_rect,
-    title="Rectangular Signal",
-    ylabel="Amplitude"
-)
-
-plot_signal(
-    t,
-    x_tri,
-    title="Triangular Signal",
-    ylabel="Amplitude"
+    x_impulse,
+    title="Unit Impulse Signal",
+    ylabel="Amplitude",
+    plot_type="stem"
 )
 

@@ -13,7 +13,8 @@ def plot_signal(
     grid=True,
     xlim=None,
     ylim=None,
-    save_path=None
+    save_path=None,
+    plot_type="line",
 ):
     """
     Plot a signal as a function of time.
@@ -44,6 +45,9 @@ def plot_signal(
         Limits for the y-axis.
     save_path : str or None, optional
         Path used to save the figure.
+     plot_type : str, optional
+        Plot representation. Available options are
+        "line" and "stem". Default is "line".
 
     Returns
     -------
@@ -52,14 +56,30 @@ def plot_signal(
 
     plt.figure(figsize=(10, 5))
 
-    plt.plot(
-        t,
-        x,
-        color="#1f77b4",
-        marker=marker,
-        markersize=markersize,
-        linewidth=linewidth
-   )
+    if plot_type == "line":
+
+        plt.plot(
+            t,
+            x,
+            marker=marker,
+            markersize=markersize,
+            linewidth=linewidth
+        )
+
+    elif plot_type == "stem":
+
+        plt.stem(
+            t,
+            x,
+            linefmt="-",
+            markerfmt="o",
+            basefmt=" "
+        )
+
+    else:
+        raise ValueError(
+            "plot_type must be 'line' or 'stem'."
+        )
 
     plt.title(title)
     plt.xlabel(xlabel)

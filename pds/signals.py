@@ -226,3 +226,39 @@ def triangular_signal(t, A=1, alpha=0, beta=2):
     return x
 
 
+def impulse_signal(t, A=1, shift=0):
+    """
+    Generate a discrete numerical representation of an impulse signal.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    A : float, optional
+        Amplitude assigned to the impulse sample. Default is 1.
+    shift : float, optional
+        Time location of the impulse. Default is 0.
+
+    Returns
+    -------
+    numpy.ndarray
+        Numerical representation of the impulse signal.
+
+    Notes
+    -----
+    This function represents an impulse numerically by assigning
+    amplitude A to the sample closest to the specified shift.
+
+    This is intended for visualization and discrete signal exercises.
+    It is not an exact numerical representation of the continuous
+    Dirac delta distribution.
+    """
+
+    x = np.zeros_like(t, dtype=float)
+
+    index = np.argmin(np.abs(t - shift))
+
+    x[index] = A
+
+    return x
+
