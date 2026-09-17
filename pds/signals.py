@@ -52,3 +52,81 @@ def sine_signal(t, A=1, f=1, phase=0):
     """
 
     return A * np.sin(2 * np.pi * f * t + phase)
+
+
+def cosine_signal(t, A=1, f=1, phase=0):
+    """
+    Generate a cosine signal.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    A : float, optional
+        Signal amplitude. Default is 1.
+    f : float, optional
+        Signal frequency in Hz. Default is 1 Hz.
+    phase : float, optional
+        Initial phase in radians. Default is 0.
+
+    Returns
+    -------
+    numpy.ndarray
+        Generated cosine signal.
+    """
+
+    return A * np.cos(2 * np.pi * f * t + phase)
+
+
+def unit_step(t, A=1):
+    """
+    Generate a unit step signal.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    A : float, optional
+        Step amplitude. Default is 1.
+
+    Returns
+    -------
+    numpy.ndarray
+        Generated unit step signal.
+    """
+
+    return A * np.where(t >= 0, 1.0, 0.0)
+
+
+def exponential_signal(t, A=1, decay=1, shift=0):
+    """
+    Generate a causal decaying exponential signal.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    A : float, optional
+        Signal amplitude. Default is 1.
+    decay : float, optional
+        Exponential decay constant. Default is 1.
+    shift : float, optional
+        Time shift in seconds. Default is 0.
+
+    Returns
+    -------
+    numpy.ndarray
+        Generated causal exponential signal.
+    """
+
+    tau = t - shift
+
+    x = np.zeros_like(t, dtype=float)
+
+    causal_region = tau >= 0
+
+    x[causal_region] = (
+        A * np.exp(-decay * tau[causal_region])
+    )
+
+    return x

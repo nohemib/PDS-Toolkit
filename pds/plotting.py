@@ -55,16 +55,31 @@ def plot_signal(
     plt.plot(
         t,
         x,
+        color="#1f77b4",
         marker=marker,
         markersize=markersize,
         linewidth=linewidth
-    )
+   )
 
     plt.title(title)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
 
     plt.grid(grid)
+
+    plt.minorticks_on()
+
+    plt.grid(
+        True,
+        which="major",
+        alpha=0.6
+    )
+
+    plt.grid(
+        True,
+        which="minor",
+        alpha=0.2
+    )
 
     if xlim is not None:
         plt.xlim(xlim)
@@ -75,4 +90,9 @@ def plot_signal(
     if save_path is not None:
         plt.savefig(save_path, dpi=300, bbox_inches="tight")
 
+    fig = plt.gcf()
+    ax = plt.gca()
+
     plt.show()
+
+    return fig, ax
