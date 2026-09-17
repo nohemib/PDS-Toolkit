@@ -1,46 +1,42 @@
 from pds.signals import (
     time_vector,
-    sine_signal,
-    cosine_signal,
-    unit_step,
-    exponential_signal
+    rectangular_signal,
+    triangular_signal
 )
 
 from pds.plotting import plot_signal
+
 
 # ======================================================
 # TIME VECTOR
 # ======================================================
 
-t = time_vector(-0.05, 0.20, fs=1000)
+t = time_vector(-5, 3, fs=20)
+
 
 # ======================================================
-# SIGNALS
+# RECTANGULAR SIGNAL
 # ======================================================
 
-x_sine = sine_signal(
+x_rect = rectangular_signal(
     t,
     A=1,
-    f=50
+    alpha=-1,
+    beta=3
 )
 
-x_cos = cosine_signal(
+
+# ======================================================
+# TRIANGULAR SIGNAL
+# ======================================================
+
+x_tri = triangular_signal(
     t,
     A=1,
-    f=50
+    alpha=-2,
+    beta=4
 )
 
-x_step = unit_step(
-    t,
-    A=3
-)
-
-x_exp = exponential_signal(
-    t,
-    A=2,
-    decay=3,
-    shift=0
-)
 
 # ======================================================
 # PLOTS
@@ -48,29 +44,15 @@ x_exp = exponential_signal(
 
 plot_signal(
     t,
-    x_sine,
-    title="50 Hz Sinusoidal Signal",
-    ylabel="Amplitude [V]"
-)
-
-plot_signal(
-    t,
-    x_cos,
-    title="50 Hz Cosine Signal",
-    ylabel="Amplitude [V]"
-)
-
-plot_signal(
-    t,
-    x_step,
-    title="Unit Step Signal",
+    x_rect,
+    title="Rectangular Signal",
     ylabel="Amplitude"
 )
 
 plot_signal(
     t,
-    x_exp,
-    title="Causal Exponential Signal",
+    x_tri,
+    title="Triangular Signal",
     ylabel="Amplitude"
 )
 

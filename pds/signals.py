@@ -130,3 +130,99 @@ def exponential_signal(t, A=1, decay=1, shift=0):
     )
 
     return x
+
+
+def rectangular_signal(t, A=1, alpha=0, beta=1):
+    """
+    Generate a rectangular signal.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    A : float, optional
+        Signal amplitude. Default is 1.
+    alpha : float, optional
+        Center of the rectangular pulse. Default is 0.
+    beta : float, optional
+        Total width of the rectangular pulse. Default is 1.
+
+    Returns
+    -------
+    numpy.ndarray
+        Generated rectangular signal.
+
+    Raises
+    ------
+    ValueError
+        If beta is not positive.
+    """
+
+    if beta <= 0:
+        raise ValueError("Parameter beta must be positive.")
+
+    return np.where(
+        np.abs(t - alpha) <= beta / 2,
+        A,
+        0.0
+    )
+
+
+def triangular_signal(t, A=1, alpha=0, beta=2):
+    """
+    Generate a triangular signal.
+
+    Parameters
+    ----------
+    t : numpy.ndarray
+        Time vector.
+    A : float, optional
+        Peak amplitude. Default is 1.
+    alpha : float, optional
+        Time location of the peak. Default is 0.
+    beta : float, optional
+        Total base width of the triangular signal.
+        Default is 2.
+
+    Returns
+    -------
+    numpy.ndarray
+        Generated triangular signal.
+
+    Raises
+    ------
+    ValueError
+        If beta is not positive.
+
+    Notes
+    -----
+    The triangular signal follows the convention:
+
+        A * tri((t - alpha) / (beta / 2))
+
+    where alpha determines the center of the triangle
+    and beta determines its total base width.
+    """
+
+    if beta <= 0:
+        raise ValueError("Parameter beta must be positive.")
+
+    a = alpha - beta / 2
+    b = alpha + beta / 2
+
+    x = np.zeros_like(t, dtype=float)
+
+    rising_region = (t > a) & (t <= alpha)
+    falling_region = (t > alpha) & (t < b)
+
+    x[rising_region] = (
+        A * (t[rising_region] - a) / (alpha - a)
+    )
+
+    x[falling_region] = (
+        -A * (t[falling_region] - b) / (b - alpha)
+    )
+
+    return x
+
+
